@@ -172,10 +172,14 @@ function animate(): void {
 	if (roll <= 0) {
 		roll += 360;
 	}
+
+	const cameraPositionX: string = `${(camera.position.x / 1_000).toFixed(1)} km`;
+	const cameraPositionY: string = `${(camera.position.y / 1_000).toFixed(1)} km`;
+	const cameraPositionZ: string = `${(camera.position.z / 1_000).toFixed(1)} km`;
 	hudCamStats.innerHTML = `Camera:
- Pos: x=${camera.position.x.toFixed(2)}, y=${camera.position.y.toFixed(2)}, z=${camera.position.z.toFixed(2)}
+ Pos: x=${cameraPositionX}, y=${cameraPositionY}, z=${cameraPositionZ}
  Rot: pitch=${pitch.toFixed(2)}, yaw=${yaw.toFixed(2)}, roll=${roll.toFixed(2)}
- Speed: ${controls.movementSpeed}`;
+ Speed: ${controls.movementSpeed} m/s, ${controls.movementSpeed / SPEED_OF_LIGHT} c`;
 }
 
 function onWindowResize(): void {
