@@ -6,8 +6,8 @@ import {
 	Mesh,
 	MeshBasicMaterial,
 	MeshPhongMaterial,
-	// MeshStandardMaterial,
 	MeshStandardMaterial,
+	Object3D,
 	PerspectiveCamera,
 	PointLight,
 	Scene,
@@ -97,32 +97,41 @@ function init(): void {
 	renderPass.renderToScreen = true;
 	composer.addPass(renderPass);
 
+	// Sun
+	const sunPivot: Object3D = new Object3D();
+
 	const sunLight: PointLight = new PointLight(0xffffff, 1);
-	sunLight.position.set(0, 0, 0);
-	scene.add(sunLight);
+	sunPivot.add(sunLight);
 
 	const sunGeometry: SphereGeometry = new SphereGeometry(solEquatorialRadius, 32, 32);
 	const sunMaterial: MeshBasicMaterial = new MeshBasicMaterial({ color: 0xffff00 });
 	const sunSphere: Mesh = new Mesh(sunGeometry, sunMaterial);
-	sunSphere.position.set(0, 0, 0);
-	scene.add(sunSphere);
+	sunPivot.add(sunSphere);
+
+	scene.add(sunPivot);
+
+	// Earth
+	const earthPivot: Object3D = new Object3D();
+	earthPivot.position.set(0, 0, distanceEarthToSun);
 
 	const earthGeometry: SphereGeometry = new SphereGeometry(earthEquatorialRadius, 32, 32);
 	const earthColorMap: Texture = new TextureLoader().load('assets/textures/earth/8081_earthmap10k.jpg');
 	const earthBumpMap: Texture = new TextureLoader().load('assets/textures/earth/8081_earthbump10k.jpg');
 	const earthSpecMap: Texture = new TextureLoader().load('assets/textures/earth/8081_earthspec10k.jpg');
-	// const earthMaterial: MeshStandardMaterial = new MeshStandardMaterial({
-	// 	map: earthColorMap,
-	// 	bumpMap: earthBumpMap
-	// });
 	const earthMaterial: MeshPhongMaterial = new MeshPhongMaterial({
 		map: earthColorMap,
 		bumpMap: earthBumpMap,
 		specularMap: earthSpecMap
 	});
 	const earthSphere: Mesh = new Mesh(earthGeometry, earthMaterial);
-	earthSphere.position.set(0, 0, distanceEarthToSun);
-	scene.add(earthSphere);
+	earthSphere.rotateX(ThreeMath.degToRad(7.155));
+	earthPivot.add(earthSphere);
+
+	sunPivot.add(earthPivot);
+
+	// Moon
+	const moonPivot: Object3D = new Object3D();
+	moonPivot.position.set(distanceMoonToEarth, 0, 0);
 
 	const moonGeometry: SphereGeometry = new SphereGeometry(moonEquatorialRadius, 32, 32);
 	const moonColorMap: Texture = new TextureLoader().load('assets/textures/moon/moonmap4k.jpg');
@@ -132,8 +141,9 @@ function init(): void {
 		bumpMap: moonBumpMap
 	});
 	const moonSphere: Mesh = new Mesh(moonGeometry, moonMaterial);
-	moonSphere.position.set(distanceMoonToEarth, 0, distanceEarthToSun);
-	scene.add(moonSphere);
+	moonPivot.add(moonSphere);
+
+	earthPivot.add(moonPivot);
 
 	camera.position.set(396157656, 1820796, 152098504138);
 	camera.rotation.set(ThreeMath.degToRad(173.64), ThreeMath.degToRad(129.95), ThreeMath.degToRad(185.04), 'XYZ');
