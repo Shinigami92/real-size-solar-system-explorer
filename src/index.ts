@@ -1,4 +1,20 @@
-import { AmbientLight, Clock, FogExp2, Math as ThreeMath, PerspectiveCamera, Scene, WebGLRenderer } from 'three';
+import {
+	AmbientLight,
+	Clock,
+	// FogExp2,
+	Math as ThreeMath,
+	Mesh,
+	MeshBasicMaterial,
+	MeshPhongMaterial,
+	// MeshStandardMaterial,
+	PerspectiveCamera,
+	PointLight,
+	Scene,
+	SphereGeometry,
+	Texture,
+	TextureLoader,
+	WebGLRenderer
+} from 'three';
 import { FlyControls } from './three/examples/js/controls/FlyControls';
 import { EffectComposer } from './three/examples/js/postprocessing/EffectComposer';
 import { RenderPass } from './three/examples/js/postprocessing/RenderPass';
@@ -21,23 +37,29 @@ let tick: number = 0;
 let hud: HTMLDivElement;
 let hudCamStats: HTMLPreElement;
 
+const SPEED_OF_LIGHT: number = 299_792_458; // in m/s
+
+const solEquatorialRadius: number = 696_342_000; // m
+const earthEquatorialRadius: number = 6_378_100; // m
+
 init();
 
 function init(): void {
 	scene = new Scene();
-	scene.fog = new FogExp2(0x0d0d0d, 0.0000125);
+	// scene.fog = new FogExp2(0x0d0d0d, 0.000000000125);
 
-	camera = new PerspectiveCamera(65, aspect, 0.1, 1e6);
+	camera = new PerspectiveCamera(65, aspect, 10, 1_000_000_000_000);
 	scene.add(camera);
 	camera.rotation.reorder('YXZ');
 	camera.lookAt(scene.position);
+	camera.position.set(10_000_000, 1_000_000, 152_100_000_000 + earthEquatorialRadius * 3);
 
 	controls = new FlyControls(camera);
 	controls.dragToLook = true;
-	controls.movementSpeed = 250;
+	controls.movementSpeed = SPEED_OF_LIGHT / 10; // speed of light m/s
 	controls.rollSpeed = Math.PI / 6;
 
-	scene.add(new AmbientLight(0x404040));
+	scene.add(new AmbientLight(0x101010));
 
 	renderer = new WebGLRenderer({ antialias: true });
 	renderer.setPixelRatio(window.devicePixelRatio);
@@ -65,6 +87,36 @@ function init(): void {
 	const renderPass: RenderPass = new RenderPass(scene, camera);
 	renderPass.renderToScreen = true;
 	composer.addPass(renderPass);
+
+	const sunLight: PointLight = new PointLight(0xffffff, 1);
+	sunLight.position.set(0, 0, 0);
+	scene.add(sunLight);
+
+	const sunGeometry: SphereGeometry = new SphereGeometry(solEquatorialRadius, 32, 32);
+	const sunMaterial: MeshBasicMaterial = new MeshBasicMaterial({ color: 0xffff00 });
+	const sunSphere: Mesh = new Mesh(sunGeometry, sunMaterial);
+	sunSphere.position.set(0, 0, 0);
+	scene.add(sunSphere);
+
+	const earthGeometry: SphereGeometry = new SphereGeometry(earthEquatorialRadius, 32, 32);
+	const earthColorMap: Texture = new TextureLoader().load('assets/textures/earth/8081_earthmap10k.jpg');
+	const earthBumpMap: Texture = new TextureLoader().load('assets/textures/earth/8081_earthbump10k.jpg');
+	const earthSpecMap: Texture = new TextureLoader().load('assets/textures/earth/8081_earthspec10k.jpg');
+	// const earthMaterial: MeshStandardMaterial = new MeshStandardMaterial({
+	// 	map: earthColorMap,
+	// 	bumpMap: earthBumpMap
+	// });
+	const earthMaterial: MeshPhongMaterial = new MeshPhongMaterial({
+		map: earthColorMap,
+		bumpMap: earthBumpMap,
+		specularMap: earthSpecMap
+	});
+	const earthSphere: Mesh = new Mesh(earthGeometry, earthMaterial);
+	earthSphere.position.set(0, 0, 152_100_000_000);
+	scene.add(earthSphere);
+
+	camera.position.set(18900548, 448545, 152089333440);
+	camera.lookAt(earthSphere.position);
 
 	animate();
 }
