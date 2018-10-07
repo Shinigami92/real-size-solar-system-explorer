@@ -1,21 +1,5 @@
-import {
-	AmbientLight,
-	Clock,
-	// FogExp2,
-	Math as ThreeMath,
-	Mesh,
-	MeshBasicMaterial,
-	MeshPhongMaterial,
-	MeshStandardMaterial,
-	Object3D,
-	PerspectiveCamera,
-	PointLight,
-	Scene,
-	SphereGeometry,
-	Texture,
-	TextureLoader,
-	WebGLRenderer
-} from 'three';
+import { AmbientLight, Clock, Math as ThreeMath, PerspectiveCamera, Scene, WebGLRenderer } from 'three';
+import { SolarSystem } from './shared/solar-system';
 import { FlyControls } from './three/examples/js/controls/FlyControls';
 import { EffectComposer } from './three/examples/js/postprocessing/EffectComposer';
 import { RenderPass } from './three/examples/js/postprocessing/RenderPass';
@@ -43,13 +27,15 @@ const SPEED_OF_LIGHT: number = 299_792_458; // in m/s
 // sizes in meter
 
 // radius
-const solEquatorialRadius: number = 696_342_000;
+// const solEquatorialRadius: number = 696_342_000;
 const earthEquatorialRadius: number = 6_378_100;
-const moonEquatorialRadius: number = 1_737_000;
+// const moonEquatorialRadius: number = 1_737_000;
 
 // distances
 const distanceEarthToSun: number = 152_100_000_000;
-const distanceMoonToEarth: number = 384_400_000;
+// const distanceMoonToEarth: number = 384_400_000;
+
+const SOLAR_SYSTEM: SolarSystem = new SolarSystem();
 
 init();
 
@@ -97,56 +83,13 @@ function init(): void {
 	renderPass.renderToScreen = true;
 	composer.addPass(renderPass);
 
-	// Sun
-	const sunPivot: Object3D = new Object3D();
+	SOLAR_SYSTEM.position.set(0, 0, 0);
+	scene.add(SOLAR_SYSTEM);
 
-	const sunLight: PointLight = new PointLight(0xffffff, 1);
-	sunPivot.add(sunLight);
+	camera.position.set(-73967500, -18628315600, 148980385000);
+	// camera.rotation.set(ThreeMath.degToRad(32.64), ThreeMath.degToRad(4.95), -ThreeMath.degToRad(96.04), 'XZY');
 
-	const sunGeometry: SphereGeometry = new SphereGeometry(solEquatorialRadius, 32, 32);
-	const sunMaterial: MeshBasicMaterial = new MeshBasicMaterial({ color: 0xffff00 });
-	const sunSphere: Mesh = new Mesh(sunGeometry, sunMaterial);
-	sunPivot.add(sunSphere);
-
-	scene.add(sunPivot);
-
-	// Earth
-	const earthPivot: Object3D = new Object3D();
-	earthPivot.position.set(0, 0, distanceEarthToSun);
-
-	const earthGeometry: SphereGeometry = new SphereGeometry(earthEquatorialRadius, 32, 32);
-	const earthColorMap: Texture = new TextureLoader().load('assets/textures/earth/8081_earthmap10k.jpg');
-	const earthBumpMap: Texture = new TextureLoader().load('assets/textures/earth/8081_earthbump10k.jpg');
-	const earthSpecMap: Texture = new TextureLoader().load('assets/textures/earth/8081_earthspec10k.jpg');
-	const earthMaterial: MeshPhongMaterial = new MeshPhongMaterial({
-		map: earthColorMap,
-		bumpMap: earthBumpMap,
-		specularMap: earthSpecMap
-	});
-	const earthSphere: Mesh = new Mesh(earthGeometry, earthMaterial);
-	earthSphere.rotateX(ThreeMath.degToRad(7.155));
-	earthPivot.add(earthSphere);
-
-	sunPivot.add(earthPivot);
-
-	// Moon
-	const moonPivot: Object3D = new Object3D();
-	moonPivot.position.set(distanceMoonToEarth, 0, 0);
-
-	const moonGeometry: SphereGeometry = new SphereGeometry(moonEquatorialRadius, 32, 32);
-	const moonColorMap: Texture = new TextureLoader().load('assets/textures/moon/moonmap4k.jpg');
-	const moonBumpMap: Texture = new TextureLoader().load('assets/textures/moon/moonbump4k.jpg');
-	const moonMaterial: MeshStandardMaterial = new MeshStandardMaterial({
-		map: moonColorMap,
-		bumpMap: moonBumpMap
-	});
-	const moonSphere: Mesh = new Mesh(moonGeometry, moonMaterial);
-	moonPivot.add(moonSphere);
-
-	earthPivot.add(moonPivot);
-
-	camera.position.set(396157656, 1820796, 152098504138);
-	camera.rotation.set(ThreeMath.degToRad(173.64), ThreeMath.degToRad(129.95), ThreeMath.degToRad(185.04), 'XYZ');
+	console.log(scene);
 
 	animate();
 }
