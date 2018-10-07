@@ -7,6 +7,7 @@ import {
 	MeshBasicMaterial,
 	MeshPhongMaterial,
 	// MeshStandardMaterial,
+	MeshStandardMaterial,
 	PerspectiveCamera,
 	PointLight,
 	Scene,
@@ -39,8 +40,16 @@ let hudCamStats: HTMLPreElement;
 
 const SPEED_OF_LIGHT: number = 299_792_458; // in m/s
 
-const solEquatorialRadius: number = 696_342_000; // m
-const earthEquatorialRadius: number = 6_378_100; // m
+// sizes in meter
+
+// radius
+const solEquatorialRadius: number = 696_342_000;
+const earthEquatorialRadius: number = 6_378_100;
+const moonEquatorialRadius: number = 1_737_000;
+
+// distances
+const distanceEarthToSun: number = 152_100_000_000;
+const distanceMoonToEarth: number = 384_400_000;
 
 init();
 
@@ -52,7 +61,7 @@ function init(): void {
 	scene.add(camera);
 	camera.rotation.reorder('YXZ');
 	camera.lookAt(scene.position);
-	camera.position.set(10_000_000, 1_000_000, 152_100_000_000 + earthEquatorialRadius * 3);
+	camera.position.set(10_000_000, 1_000_000, distanceEarthToSun + earthEquatorialRadius * 3);
 
 	controls = new FlyControls(camera);
 	controls.dragToLook = true;
@@ -112,11 +121,22 @@ function init(): void {
 		specularMap: earthSpecMap
 	});
 	const earthSphere: Mesh = new Mesh(earthGeometry, earthMaterial);
-	earthSphere.position.set(0, 0, 152_100_000_000);
+	earthSphere.position.set(0, 0, distanceEarthToSun);
 	scene.add(earthSphere);
 
-	camera.position.set(18900548, 448545, 152089333440);
-	camera.lookAt(earthSphere.position);
+	const moonGeometry: SphereGeometry = new SphereGeometry(moonEquatorialRadius, 32, 32);
+	const moonColorMap: Texture = new TextureLoader().load('assets/textures/moon/moonmap4k.jpg');
+	const moonBumpMap: Texture = new TextureLoader().load('assets/textures/moon/moonbump4k.jpg');
+	const moonMaterial: MeshStandardMaterial = new MeshStandardMaterial({
+		map: moonColorMap,
+		bumpMap: moonBumpMap
+	});
+	const moonSphere: Mesh = new Mesh(moonGeometry, moonMaterial);
+	moonSphere.position.set(distanceMoonToEarth, 0, distanceEarthToSun);
+	scene.add(moonSphere);
+
+	camera.position.set(396157656, 1820796, 152098504138);
+	camera.rotation.set(ThreeMath.degToRad(173.64), ThreeMath.degToRad(129.95), ThreeMath.degToRad(185.04), 'XYZ');
 
 	animate();
 }
