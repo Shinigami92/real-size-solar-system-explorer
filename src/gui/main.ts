@@ -5,6 +5,18 @@ const mainGui: GUI = new GUI({ width: 300 });
 
 export function initMainGui(camera: PerspectiveCamera): void {
 	const planetFolder: GUI = mainGui.addFolder('Planets');
+
+	const mercuryFolder: GUI = planetFolder.addFolder('Mercury');
+	mercuryFolder.add(
+		{
+			'Travel 1'(): void {
+				camera.position.set(14913000, -3413955500, 57812408500);
+				camera.rotation.set(-0.01, 0.7, 0.04, 'YZX');
+			}
+		},
+		'Travel 1'
+	);
+
 	const earthFolder: GUI = planetFolder.addFolder('Earth');
 	earthFolder.add(
 		{
