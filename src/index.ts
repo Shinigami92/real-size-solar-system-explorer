@@ -1,4 +1,5 @@
 import { AmbientLight, Clock, Math as ThreeMath, PerspectiveCamera, Scene, WebGLRenderer } from 'three';
+import { initMainGui } from './gui/main';
 import { SolarSystem } from './shared/solar-system';
 import { FlyControls } from './three/examples/js/controls/FlyControls';
 import { EffectComposer } from './three/examples/js/postprocessing/EffectComposer';
@@ -64,6 +65,8 @@ function init(): void {
 
 	// stats = new Stats();
 
+	initMainGui(camera);
+
 	hud = document.createElement('div');
 	hud.id = 'hud';
 	hudCamStats = document.createElement('pre');
@@ -86,8 +89,8 @@ function init(): void {
 	SOLAR_SYSTEM.position.set(0, 0, 0);
 	scene.add(SOLAR_SYSTEM);
 
-	camera.position.set(-73967500, -18628315600, 148980385000);
-	// camera.rotation.set(ThreeMath.degToRad(32.64), ThreeMath.degToRad(4.95), -ThreeMath.degToRad(96.04), 'XZY');
+	camera.position.set(-147531800, -18545116900, 148369874000);
+	camera.rotation.set(-0.5, -2.37, 0.16, 'YZX');
 
 	console.log(scene);
 
@@ -122,6 +125,7 @@ function animate(): void {
 	hudCamStats.innerHTML = `Camera:
  Pos: x=${cameraPositionX}, y=${cameraPositionY}, z=${cameraPositionZ}
  Rot: pitch=${pitch.toFixed(2)}, yaw=${yaw.toFixed(2)}, roll=${roll.toFixed(2)}
+      x=${camera.rotation.x.toFixed(2)}, y=${camera.rotation.y.toFixed(2)}, z=${camera.rotation.z.toFixed(2)}
  Speed: ${controls.movementSpeed} m/s, ${controls.movementSpeed / SPEED_OF_LIGHT} c`;
 }
 
