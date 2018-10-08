@@ -17,6 +17,17 @@ export function initMainGui(camera: PerspectiveCamera): void {
 		'Travel 1'
 	);
 
+	const venusFolder: GUI = planetFolder.addFolder('Venus');
+	venusFolder.add(
+		{
+			'Travel 1'(): void {
+				camera.position.set(27149800, -7284690100, 107967306100);
+				camera.rotation.set(-0.01, 0.78, 0.02, 'YZX');
+			}
+		},
+		'Travel 1'
+	);
+
 	const earthFolder: GUI = planetFolder.addFolder('Earth');
 	earthFolder.add(
 		{

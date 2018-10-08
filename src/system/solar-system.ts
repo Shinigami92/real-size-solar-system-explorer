@@ -39,6 +39,24 @@ export class SolarSystem extends Object3D {
 		});
 		this.planets.push(mercury);
 
+		// Venus
+		const venus: Planet = new Planet({
+			name: 'Venus',
+			equatorialRadius: 6_051_800,
+			rotationSpeed: 1.81,
+			orbit: {
+				pivot: this,
+				semimajorAxis: 108_208_000_000,
+				orbitalSpeed: 9.727_777_8,
+				orbitalInclination: 3.86
+			},
+			material: new MeshStandardMaterial({
+				bumpMap: textureLoader.load('assets/textures/venus/venusbump.jpg'),
+				map: textureLoader.load('assets/textures/venus/venusmap.jpg')
+			})
+		});
+		this.planets.push(venus);
+
 		// Earth
 		const earth: Planet = new Planet({
 			name: 'Earth',
@@ -78,5 +96,8 @@ export class SolarSystem extends Object3D {
 
 		this.updateMatrixWorld(true);
 		console.log('mercury position:', mercury.getWorldPosition(this.position));
+		console.log('venus position:', venus.getWorldPosition(this.position));
+		console.log('earth position:', earth.getWorldPosition(this.position));
+		console.log('moon position:', moon.getWorldPosition(this.position));
 	}
 }
