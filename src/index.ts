@@ -1,6 +1,6 @@
 import { AmbientLight, Clock, Math as ThreeMath, PerspectiveCamera, Scene, WebGLRenderer } from 'three';
 import { initMainGui } from './gui/main';
-import { SolarSystem } from './shared/solar-system';
+import { SolarSystem } from './system/solar-system';
 import { FlyControls } from './three/examples/js/controls/FlyControls';
 import { EffectComposer } from './three/examples/js/postprocessing/EffectComposer';
 import { RenderPass } from './three/examples/js/postprocessing/RenderPass';
