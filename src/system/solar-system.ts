@@ -1,4 +1,4 @@
-import { MeshPhongMaterial, MeshStandardMaterial, Object3D, TextureLoader } from 'three';
+import { MeshBasicMaterial, MeshPhongMaterial, MeshStandardMaterial, Object3D, TextureLoader } from 'three';
 import { Moon } from './moon';
 import { Planet } from './planet';
 import { Star } from './star';
@@ -16,7 +16,10 @@ export class SolarSystem extends Object3D {
 		// Sol
 		const sol: Star = new Star({
 			name: 'Sol',
-			equatorialRadius: 696_342_000
+			equatorialRadius: 696_342_000,
+			material: new MeshBasicMaterial({
+				map: textureLoader.load('assets/textures/sol/sunmap.jpg')
+			})
 		});
 		this.add(sol);
 		this.star = sol;
@@ -50,9 +53,14 @@ export class SolarSystem extends Object3D {
 				orbitalSpeed: 9.727_777_8,
 				orbitalInclination: 3.86
 			},
+			// material: new MeshStandardMaterial({
+			// 	bumpMap: textureLoader.load('assets/textures/venus/venusbump.jpg'),
+			// 	map: textureLoader.load('assets/textures/venus/venusmap.jpg')
+			// }),
 			material: new MeshStandardMaterial({
 				bumpMap: textureLoader.load('assets/textures/venus/venusbump.jpg'),
-				map: textureLoader.load('assets/textures/venus/venusmap.jpg')
+				map: textureLoader.load('assets/textures/venus/8k_venus_surface.jpg')
+				// map: textureLoader.load('assets/textures/venus/8k_venus_atmosphere.jpg')
 			})
 		});
 		this.planets.push(venus);
@@ -68,10 +76,16 @@ export class SolarSystem extends Object3D {
 				orbitalSpeed: 8.272_222_2,
 				orbitalInclination: 7.155
 			},
+			// material: new MeshPhongMaterial({
+			// 	bumpMap: textureLoader.load('assets/textures/earth/8081_earthbump10k.jpg'),
+			// 	map: textureLoader.load('assets/textures/earth/8081_earthmap10k.jpg'),
+			// 	specularMap: textureLoader.load('assets/textures/earth/8081_earthspec10k.jpg')
+			// }),
 			material: new MeshPhongMaterial({
 				bumpMap: textureLoader.load('assets/textures/earth/8081_earthbump10k.jpg'),
-				map: textureLoader.load('assets/textures/earth/8081_earthmap10k.jpg'),
-				specularMap: textureLoader.load('assets/textures/earth/8081_earthspec10k.jpg')
+				map: textureLoader.load('assets/textures/earth/8k_earth_daymap.jpg'),
+				normalMap: textureLoader.load('assets/textures/earth/8k_earth_normal_map.png'),
+				specularMap: textureLoader.load('assets/textures/earth/8k_earth_specular_map.png')
 			})
 		});
 		this.planets.push(earth);

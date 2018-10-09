@@ -4,6 +4,17 @@ import { PerspectiveCamera } from 'three';
 const mainGui: GUI = new GUI({ width: 300 });
 
 export function initMainGui(camera: PerspectiveCamera): void {
+	const solFolder: GUI = mainGui.addFolder('Sol');
+	solFolder.add(
+		{
+			'Travel 1'(): void {
+				camera.position.set(1047299300, -446626200, 1372115600);
+				camera.rotation.set(0.3, 0.58, 0.23, 'YZX');
+			}
+		},
+		'Travel 1'
+	);
+
 	const planetFolder: GUI = mainGui.addFolder('Planets');
 
 	const mercuryFolder: GUI = planetFolder.addFolder('Mercury');
