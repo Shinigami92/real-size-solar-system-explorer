@@ -58,4 +58,15 @@ export function initMainGui(camera: PerspectiveCamera): void {
 		},
 		'Travel 2'
 	);
+
+	const marsFolder: GUI = planetFolder.addFolder('Mars');
+	marsFolder.add(
+		{
+			'Travel 1'(): void {
+				camera.position.set(12305100, -22441044600, 226839506300);
+				camera.rotation.set(0.04, 0.49, 0.01, 'YZX');
+			}
+		},
+		'Travel 1'
+	);
 }

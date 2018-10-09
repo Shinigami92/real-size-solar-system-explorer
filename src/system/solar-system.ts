@@ -108,10 +108,30 @@ export class SolarSystem extends Object3D {
 		});
 		earth.moons.push(moon);
 
+		// Mars
+		const mars: Planet = new Planet({
+			name: 'Mars',
+			equatorialRadius: 3_396_200,
+			rotationSpeed: 241.17, // 241.17 m/s
+			orbit: {
+				pivot: this,
+				semimajorAxis: 227_939_200_000,
+				orbitalSpeed: 24_007, // 24.007 km/s
+				orbitalInclination: 5.65
+			},
+			material: new MeshPhongMaterial({
+				bumpMap: textureLoader.load('assets/textures/mars/marsbump1k.jpg'),
+				map: textureLoader.load('assets/textures/mars/8k_mars.jpg'),
+				normalMap: textureLoader.load('assets/textures/mars/mars_1k_normal.jpg')
+			})
+		});
+		this.planets.push(mars);
+
 		this.updateMatrixWorld(true);
 		console.log('mercury position:', mercury.getWorldPosition(this.position));
 		console.log('venus position:', venus.getWorldPosition(this.position));
 		console.log('earth position:', earth.getWorldPosition(this.position));
 		console.log('moon position:', moon.getWorldPosition(this.position));
+		console.log('mars position:', mars.getWorldPosition(this.position));
 	}
 }
