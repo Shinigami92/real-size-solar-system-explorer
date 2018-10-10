@@ -99,8 +99,8 @@ function init(): void {
 		}
 	}, 10_000);
 
-	camera.position.set(46600, -22443607300, 226855156200);
-	camera.rotation.set(0.02, 0.7, 0.18, 'YZX');
+	camera.position.set(-147531800, -18545116900, 148369874000);
+	camera.rotation.set(-0.5, -2.37, 0.16, 'YZX');
 
 	console.log(scene);
 
@@ -137,6 +137,13 @@ function animate(): void {
  Rot: pitch=${pitch.toFixed(2)}, yaw=${yaw.toFixed(2)}, roll=${roll.toFixed(2)}
       x=${camera.rotation.x.toFixed(2)}, y=${camera.rotation.y.toFixed(2)}, z=${camera.rotation.z.toFixed(2)}
  Speed: ${controls.movementSpeed} m/s, ${controls.movementSpeed / SPEED_OF_LIGHT} c`;
+
+	for (const planet of SOLAR_SYSTEM.planets) {
+		planet.update(delta);
+		for (const moon of planet.moons) {
+			moon.update(delta);
+		}
+	}
 }
 
 function onWindowResize(): void {

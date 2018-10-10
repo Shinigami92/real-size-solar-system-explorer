@@ -13,6 +13,8 @@ import { Moon } from './moon';
 import { Planet } from './planet';
 import { Star } from './star';
 
+const DAYS_TO_SECONDS: number = 86_400;
+
 export class SolarSystem extends Object3D {
 	public star: Star;
 
@@ -39,10 +41,12 @@ export class SolarSystem extends Object3D {
 			name: 'Mercury',
 			equatorialRadius: 2_439_700,
 			rotationSpeed: 3_026,
+			rotationPeriod: 58.646 * DAYS_TO_SECONDS,
 			orbit: {
 				pivot: this,
 				semimajorAxis: 57_909_050_000,
-				orbitalSpeed: 13_156.111,
+				orbitalSpeed: 47_362,
+				orbitalPeriod: 87.9691 * DAYS_TO_SECONDS,
 				orbitalInclination: 3.38
 			},
 			material: new MeshStandardMaterial({
@@ -57,10 +61,12 @@ export class SolarSystem extends Object3D {
 			name: 'Venus',
 			equatorialRadius: 6_051_800,
 			rotationSpeed: 1.81,
+			rotationPeriod: -243.025 * DAYS_TO_SECONDS,
 			orbit: {
 				pivot: this,
 				semimajorAxis: 108_208_000_000,
-				orbitalSpeed: 9.727_777_8,
+				orbitalSpeed: 35_020,
+				orbitalPeriod: 224.701 * DAYS_TO_SECONDS,
 				orbitalInclination: 3.86
 			},
 			// material: new MeshStandardMaterial({
@@ -78,12 +84,14 @@ export class SolarSystem extends Object3D {
 		// Earth
 		const earth: Planet = new Planet({
 			name: 'Earth',
-			equatorialRadius: 60_378_100,
-			rotationSpeed: 0,
+			equatorialRadius: 60_378_100, // m
+			rotationSpeed: 465.1, // m/s
+			rotationPeriod: 86164.1,
 			orbit: {
 				pivot: this,
 				semimajorAxis: 149_600_000_000,
-				orbitalSpeed: 8.272_222_2,
+				orbitalSpeed: 29_780,
+				orbitalPeriod: 365.256363004 * DAYS_TO_SECONDS,
 				orbitalInclination: 7.155
 			},
 			// material: new MeshPhongMaterial({
@@ -104,11 +112,13 @@ export class SolarSystem extends Object3D {
 		const moon: Moon = new Moon({
 			name: 'Moon',
 			equatorialRadius: 1_737_000,
-			rotationSpeed: 0,
+			rotationSpeed: 4.627,
+			rotationPeriod: 27.321661 * DAYS_TO_SECONDS,
 			orbit: {
 				pivot: earth,
 				semimajorAxis: 384_400_000,
-				orbitalSpeed: 0.283_888_89,
+				orbitalSpeed: 1_022,
+				orbitalPeriod: 27.321661 * DAYS_TO_SECONDS,
 				orbitalInclination: 5.156
 			},
 			material: new MeshStandardMaterial({
@@ -122,11 +132,13 @@ export class SolarSystem extends Object3D {
 		const mars: Planet = new Planet({
 			name: 'Mars',
 			equatorialRadius: 3_396_200,
-			rotationSpeed: 241.17, // 241.17 m/s
+			rotationSpeed: 241.17, // 241.17 m/s,
+			rotationPeriod: 1.025957 * DAYS_TO_SECONDS,
 			orbit: {
 				pivot: this,
 				semimajorAxis: 227_939_200_000,
 				orbitalSpeed: 24_007, // 24.007 km/s
+				orbitalPeriod: 686.971 * DAYS_TO_SECONDS,
 				orbitalInclination: 5.65
 			},
 			material: new MeshPhongMaterial({
@@ -149,11 +161,13 @@ export class SolarSystem extends Object3D {
 				const phobos: Moon = new Moon({
 					name: 'Phobos',
 					equatorialRadius: 22_000, // (26,8 × 22,4 × 18,4) km
-					rotationSpeed: 0,
+					rotationSpeed: 3.05556,
+					rotationPeriod: 0.31891023 * DAYS_TO_SECONDS,
 					orbit: {
 						pivot: mars,
 						semimajorAxis: 9_378_000,
 						orbitalSpeed: 2_139_000, // 2,139 km/s
+						orbitalPeriod: 0.31891023 * DAYS_TO_SECONDS,
 						orbitalInclination: 1.075
 					},
 					material: new MeshStandardMaterial({
@@ -179,10 +193,12 @@ export class SolarSystem extends Object3D {
 					name: 'Deimos',
 					equatorialRadius: 12_200, // (15,0 × 12,2 × 10,4) km
 					rotationSpeed: 0,
+					rotationPeriod: 1.263 * DAYS_TO_SECONDS,
 					orbit: {
 						pivot: mars,
 						semimajorAxis: 23_459_000, // 23.459 km
-						orbitalSpeed: 1_351_000, // 1,351 km/s
+						orbitalSpeed: 1_351.3, // 1,351 km/s
+						orbitalPeriod: 1.263 * DAYS_TO_SECONDS,
 						orbitalInclination: 0.93
 					},
 					material: new MeshStandardMaterial({

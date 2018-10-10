@@ -58,6 +58,15 @@ export function initMainGui(camera: PerspectiveCamera): void {
 		},
 		'Travel 2'
 	);
+	earthFolder.add(
+		{
+			'Moon Travel 1'(): void {
+				camera.position.set(3925500, -18715589000, 148812150700);
+				camera.rotation.set(0.05, 0.75, -0.06, 'YZX');
+			}
+		},
+		'Moon Travel 1'
+	);
 
 	const marsFolder: GUI = planetFolder.addFolder('Mars');
 	marsFolder.add(
@@ -68,6 +77,15 @@ export function initMainGui(camera: PerspectiveCamera): void {
 			}
 		},
 		'Travel 1'
+	);
+	marsFolder.add(
+		{
+			'Travel 2'(): void {
+				camera.position.set(11904600, -22441465500, 226850792700);
+				camera.rotation.set(-0.12, 1.18, 0.1, 'YZX');
+			}
+		},
+		'Travel 2'
 	);
 	marsFolder.add(
 		{
