@@ -21,6 +21,10 @@ Demo: [shinigami92.github.io/real-size-solar-system-explorer](https://shinigami9
 -   Textures made by James Hastings-Trew from [Planet Pixel Emporium](http://planetpixelemporium.com/planets.html)
 -   Textures made [Solar System Scope](https://www.solarsystemscope.com/textures) and licensed by [Distributed under Attribution 4.0 International license](https://creativecommons.org/licenses/by/4.0)
 
+### Models
+
+-   Some Models from https://space.frieger.com/asteroids
+
 ## License
 
 [MIT License](LICENSE) - 2018 Christopher Quadflieg

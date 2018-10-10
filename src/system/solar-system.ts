@@ -102,7 +102,7 @@ export class SolarSystem extends Object3D {
 
 		// Moon
 		const moon: Moon = new Moon({
-			name: 'Earth',
+			name: 'Moon',
 			equatorialRadius: 1_737_000,
 			rotationSpeed: 0,
 			orbit: {
@@ -137,18 +137,16 @@ export class SolarSystem extends Object3D {
 		});
 		this.planets.push(mars);
 
-		// Phobos
 		const objLoader: OBJLoader = new OBJLoader();
 
-		let phobos: Moon | undefined;
+		// Phobos
 		objLoader.load(
 			'assets/objects/mars/Phobos Oberst.obj',
 			(object: Group) => {
 				// console.log(object);
 				const mesh: Mesh = object.children[0] as Mesh;
-				console.log(mesh);
 				mesh.scale.setScalar(2_200);
-				phobos = new Moon({
+				const phobos: Moon = new Moon({
 					name: 'Phobos',
 					equatorialRadius: 22_000, // (26,8 × 22,4 × 18,4) km
 					rotationSpeed: 0,
@@ -166,18 +164,37 @@ export class SolarSystem extends Object3D {
 				});
 				mars.moons.push(phobos);
 			},
-			(xhr: ProgressEvent) => console.log(`${(xhr.loaded / xhr.total) * 100}% loaded`),
+			(xhr: ProgressEvent) => console.debug(`${(xhr.loaded / xhr.total) * 100}% loaded`),
 			(error: ErrorEvent) => console.warn('An error happened', error)
 		);
 
-		this.updateMatrixWorld(true);
-		// setTimeout(() => {
-		console.log('mercury position:', mercury.getWorldPosition(this.position));
-		console.log('venus position:', venus.getWorldPosition(this.position));
-		console.log('earth position:', earth.getWorldPosition(this.position));
-		console.log('moon position:', moon.getWorldPosition(this.position));
-		console.log('mars position:', mars.getWorldPosition(this.position));
-		console.log('phobos position:', phobos && phobos.getWorldPosition(this.position));
-		// }, 10_000);
+		// Deimos
+		objLoader.load(
+			'assets/objects/mars/Deimos Thomas.obj',
+			(object: Group) => {
+				// console.log(object);
+				const mesh: Mesh = object.children[0] as Mesh;
+				mesh.scale.setScalar(1_220);
+				const deimos: Moon = new Moon({
+					name: 'Deimos',
+					equatorialRadius: 12_200, // (15,0 × 12,2 × 10,4) km
+					rotationSpeed: 0,
+					orbit: {
+						pivot: mars,
+						semimajorAxis: 23_459_000, // 23.459 km
+						orbitalSpeed: 1_351_000, // 1,351 km/s
+						orbitalInclination: 0.93
+					},
+					material: new MeshStandardMaterial({
+						bumpMap: textureLoader.load('assets/textures/mars/deimosbump.jpg'),
+						map: textureLoader.load('assets/textures/mars/Deimos Grayscale.jpg')
+					}),
+					mesh
+				});
+				mars.moons.push(deimos);
+			},
+			(xhr: ProgressEvent) => console.debug(`${(xhr.loaded / xhr.total) * 100}% loaded`),
+			(error: ErrorEvent) => console.warn('An error happened', error)
+		);
 	}
 }

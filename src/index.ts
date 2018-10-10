@@ -36,7 +36,7 @@ const earthEquatorialRadius: number = 6_378_100;
 const distanceEarthToSun: number = 152_100_000_000;
 // const distanceMoonToEarth: number = 384_400_000;
 
-const SOLAR_SYSTEM: SolarSystem = new SolarSystem();
+let SOLAR_SYSTEM: SolarSystem;
 
 init();
 
@@ -86,11 +86,21 @@ function init(): void {
 	renderPass.renderToScreen = true;
 	composer.addPass(renderPass);
 
+	SOLAR_SYSTEM = new SolarSystem();
 	SOLAR_SYSTEM.position.set(0, 0, 0);
 	scene.add(SOLAR_SYSTEM);
 
-	camera.position.set(-147531800, -18545116900, 148369874000);
-	camera.rotation.set(-0.5, -2.37, 0.16, 'YZX');
+	setTimeout(() => {
+		for (const planet of SOLAR_SYSTEM.planets) {
+			console.log(planet.name, planet.getWorldPosition(scene.position));
+			for (const moon of planet.moons) {
+				console.log(planet.name, moon.name, moon.getWorldPosition(scene.position));
+			}
+		}
+	}, 10_000);
+
+	camera.position.set(46600, -22443607300, 226855156200);
+	camera.rotation.set(0.02, 0.7, 0.18, 'YZX');
 
 	console.log(scene);
 

@@ -78,4 +78,13 @@ export function initMainGui(camera: PerspectiveCamera): void {
 		},
 		'Phobos Travel 1'
 	);
+	marsFolder.add(
+		{
+			'Deimos Travel 1'(): void {
+				camera.position.set(46600, -22443607300, 226855156200);
+				camera.rotation.set(0.02, 0.7, 0.18, 'YZX');
+			}
+		},
+		'Deimos Travel 1'
+	);
 }
