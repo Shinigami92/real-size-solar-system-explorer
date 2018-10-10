@@ -14,7 +14,11 @@ module.exports = {
 		contentBase: './dist'
 	},
 	resolve: {
-		extensions: ['.tsx', '.ts', '.js']
+		extensions: ['.tsx', '.ts', '.js'],
+		alias: {
+			three$: 'three/build/three.min.js',
+			'three/.*$': 'three'
+		}
 	},
 	module: {
 		rules: [

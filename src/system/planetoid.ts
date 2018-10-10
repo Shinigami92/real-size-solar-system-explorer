@@ -21,6 +21,7 @@ export interface PlanetoidOption {
 	rotationSpeed?: number;
 	orbit?: OrbitOption;
 	material?: MeshBasicMaterial | MeshStandardMaterial | MeshPhongMaterial;
+	mesh?: Mesh;
 }
 
 export class Planetoid extends Object3D {
@@ -34,13 +35,7 @@ export class Planetoid extends Object3D {
 	private material: MeshBasicMaterial | MeshStandardMaterial | MeshPhongMaterial;
 	private mesh: Mesh;
 
-	constructor({
-		name,
-		equatorialRadius,
-		rotationSpeed = 0,
-		orbit,
-		material = new MeshBasicMaterial({ color: 0xfffff00 })
-	}: PlanetoidOption) {
+	constructor({ name, equatorialRadius, rotationSpeed = 0, orbit, material, mesh }: PlanetoidOption) {
 		super();
 		this.name = name;
 		this.equatorialRadius = equatorialRadius;
@@ -55,10 +50,17 @@ export class Planetoid extends Object3D {
 			this.orbitalPivot.rotateX(Math.degToRad(this.orbit.orbitalInclination));
 		}
 
-		this.geometry = new SphereGeometry(this.equatorialRadius, 32, 32);
-		this.material = material;
-
-		this.mesh = new Mesh(this.geometry, this.material);
+		if (mesh === undefined) {
+			this.geometry = new SphereGeometry(this.equatorialRadius, 32, 32);
+			this.material = material || new MeshBasicMaterial({ color: 0xfffff00 });
+			this.mesh = new Mesh(this.geometry, this.material);
+		} else {
+			this.mesh = mesh;
+			if (material) {
+				this.material = material;
+				this.mesh.material = this.material;
+			}
+		}
 
 		this.add(this.mesh);
 	}

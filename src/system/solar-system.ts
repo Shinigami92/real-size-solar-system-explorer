@@ -1,4 +1,14 @@
-import { MeshBasicMaterial, MeshPhongMaterial, MeshStandardMaterial, Object3D, TextureLoader } from 'three';
+import {
+	Group,
+	Mesh,
+	MeshBasicMaterial,
+	MeshPhongMaterial,
+	MeshStandardMaterial,
+	Object3D,
+	OBJLoader,
+	TextureLoader
+} from 'three';
+import 'three/examples/js/loaders/OBJLoader';
 import { Moon } from './moon';
 import { Planet } from './planet';
 import { Star } from './star';
@@ -127,11 +137,47 @@ export class SolarSystem extends Object3D {
 		});
 		this.planets.push(mars);
 
+		// Phobos
+		const objLoader: OBJLoader = new OBJLoader();
+
+		let phobos: Moon | undefined;
+		objLoader.load(
+			'assets/objects/mars/Phobos Oberst.obj',
+			(object: Group) => {
+				// console.log(object);
+				const mesh: Mesh = object.children[0] as Mesh;
+				console.log(mesh);
+				mesh.scale.setScalar(2_200);
+				phobos = new Moon({
+					name: 'Phobos',
+					equatorialRadius: 22_000, // (26,8 × 22,4 × 18,4) km
+					rotationSpeed: 0,
+					orbit: {
+						pivot: mars,
+						semimajorAxis: 9_378_000,
+						orbitalSpeed: 2_139_000, // 2,139 km/s
+						orbitalInclination: 1.075
+					},
+					material: new MeshStandardMaterial({
+						bumpMap: textureLoader.load('assets/textures/mars/phobosbump.jpg'),
+						map: textureLoader.load('assets/textures/mars/Phobos Grayscale.jpg')
+					}),
+					mesh
+				});
+				mars.moons.push(phobos);
+			},
+			(xhr: ProgressEvent) => console.log(`${(xhr.loaded / xhr.total) * 100}% loaded`),
+			(error: ErrorEvent) => console.warn('An error happened', error)
+		);
+
 		this.updateMatrixWorld(true);
+		// setTimeout(() => {
 		console.log('mercury position:', mercury.getWorldPosition(this.position));
 		console.log('venus position:', venus.getWorldPosition(this.position));
 		console.log('earth position:', earth.getWorldPosition(this.position));
 		console.log('moon position:', moon.getWorldPosition(this.position));
 		console.log('mars position:', mars.getWorldPosition(this.position));
+		console.log('phobos position:', phobos && phobos.getWorldPosition(this.position));
+		// }, 10_000);
 	}
 }
